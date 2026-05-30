@@ -14,6 +14,16 @@ app.on('ready', () => {
   // Override User-Agent to match yt-dlp Chrome desktop agent for youtube CDN compatibility
   session.defaultSession.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
 
+  // Intercept and rewrite Referer/Origin headers for YouTube embeds to prevent Error 153 inside Electron's file:// environment
+  session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
+    const url = details.url.toLowerCase();
+    if (url.includes('youtube.com') || url.includes('youtube-nocookie.com') || url.includes('ytimg.com')) {
+      details.requestHeaders['Referer'] = 'https://www.youtube.com/';
+      details.requestHeaders['Origin'] = 'https://www.youtube.com/';
+    }
+    callback({ requestHeaders: details.requestHeaders });
+  });
+
   // Start python backend server
   const scriptPath = path.join(__dirname, 'server.py');
   pythonProcess = spawn('python', [scriptPath], {
