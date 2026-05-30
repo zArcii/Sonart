@@ -94,24 +94,77 @@ document.addEventListener('DOMContentLoaded', () => {
   function applyAnimatedBackground(bgName) {
     const bgContainer = $('app-background');
     if (!bgContainer) return;
+    
+    // If a YouTube background is active, don't override it with animated background classes
+    const savedYt = localStorage.getItem('sonart-theme-yt-bg') || '';
+    if (savedYt && getYoutubeVideoId(savedYt)) {
+      bgContainer.className = '';
+      bgContainer.classList.add('bg-youtube');
+      return;
+    }
+    
     bgContainer.className = '';
     bgContainer.classList.add(`bg-${bgName}`);
+  }
+
+  function loadYoutubeBackground(url) {
+    const container = $('yt-bg-container');
+    const bgContainer = $('app-background');
+    if (!container || !bgContainer) return;
+
+    if (!url) {
+      container.innerHTML = '';
+      const activeBg = localStorage.getItem('sonart-theme-bg-animated') || 'space';
+      localStorage.removeItem('sonart-theme-yt-bg');
+      applyAnimatedBackground(activeBg);
+      return;
+    }
+
+    const videoId = getYoutubeVideoId(url);
+    if (!videoId) {
+      container.innerHTML = '';
+      const activeBg = localStorage.getItem('sonart-theme-bg-animated') || 'space';
+      localStorage.removeItem('sonart-theme-yt-bg');
+      applyAnimatedBackground(activeBg);
+      return;
+    }
+
+    container.innerHTML = `
+      <iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${videoId}&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3" 
+              frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    `;
+    
+    bgContainer.className = '';
+    bgContainer.classList.add('bg-youtube');
+  }
+
+  function getYoutubeVideoId(url) {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
   }
 
   const savedDesign = localStorage.getItem('sonart-theme-design') || 'default';
   const savedMode = localStorage.getItem('sonart-theme-mode') || 'dark';
   const savedAccent = localStorage.getItem('sonart-theme-accent') || '#FFFFFF';
   const savedPrimary = localStorage.getItem('sonart-theme-primary') || '#000000';
-  const savedBgAnim = localStorage.getItem('sonart-theme-bg-animated') || 'none';
+  const savedBgAnim = localStorage.getItem('sonart-theme-bg-animated') || 'space';
+  const savedYtBg = localStorage.getItem('sonart-theme-yt-bg') || '';
+
   applyTheme(savedDesign, savedMode, savedAccent, savedPrimary);
-  applyAnimatedBackground(savedBgAnim);
+  if (savedYtBg && getYoutubeVideoId(savedYtBg)) {
+    loadYoutubeBackground(savedYtBg);
+  } else {
+    applyAnimatedBackground(savedBgAnim);
+  }
 
   function initCustomizationUI() {
     const design = localStorage.getItem('sonart-theme-design') || 'default';
     const mode = localStorage.getItem('sonart-theme-mode') || 'dark';
     const accent = localStorage.getItem('sonart-theme-accent') || '#FFFFFF';
     const primary = localStorage.getItem('sonart-theme-primary') || '#000000';
-    const bgAnim = localStorage.getItem('sonart-theme-bg-animated') || 'none';
+    const bgAnim = localStorage.getItem('sonart-theme-bg-animated') || 'space';
+    const ytBg = localStorage.getItem('sonart-theme-yt-bg') || '';
 
     const designRadio = document.querySelector(`input[name="theme-design"][value="${design}"]`);
     if (designRadio) designRadio.checked = true;
@@ -121,7 +174,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const bgRadio = document.querySelector(`input[name="bg-animated"][value="${bgAnim}"]`);
     if (bgRadio) bgRadio.checked = true;
-    applyAnimatedBackground(bgAnim);
+
+    const ytInput = $('yt-bg-url');
+    if (ytInput) ytInput.value = ytBg;
+
+    if (ytBg && getYoutubeVideoId(ytBg)) {
+      loadYoutubeBackground(ytBg);
+    } else {
+      applyAnimatedBackground(bgAnim);
+    }
 
     const pickerAccent = $('picker-accent-color');
     if (pickerAccent) pickerAccent.value = accent;
@@ -166,6 +227,19 @@ document.addEventListener('DOMContentLoaded', () => {
         applyAnimatedBackground(bgAnim);
       });
     });
+
+    const ytInput = $('yt-bg-url');
+    if (ytInput) {
+      ytInput.addEventListener('input', (e) => {
+        const url = e.target.value.trim();
+        if (url) {
+          localStorage.setItem('sonart-theme-yt-bg', url);
+        } else {
+          localStorage.removeItem('sonart-theme-yt-bg');
+        }
+        loadYoutubeBackground(url);
+      });
+    }
 
     document.querySelectorAll('#accent-presets .color-preset-circle').forEach(circle => {
       circle.addEventListener('click', (e) => {
