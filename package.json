@@ -1,0 +1,32 @@
+{
+  "name": "sonart",
+  "version": "1.0.0",
+  "description": "Sonart — Minimalist YouTube Music Desktop Client",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win"
+  },
+  "author": "Sonart",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.0.0"
+  },
+  "dependencies": {
+    "@ghostery/adblocker-electron": "^2.0.0",
+    "cross-fetch": "^4.0.0",
+    "discord-rpc": "^4.0.1"
+  },
+  "build": {
+    "appId": "com.sonart.app",
+    "productName": "Sonart",
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.png"
+    },
+    "directories": {
+      "output": "build"
+    }
+  }
+}

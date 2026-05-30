@@ -1,0 +1,34 @@
+# Dependency directories
+node_modules/
+jspm_packages/
+web_modules/
+
+# Python cache and venv
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+
+# Credentials / Private settings
+headers_auth.json
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+*.log
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# Output / Built packages
+out/
+dist/
+build/
+bin/
+obj/
