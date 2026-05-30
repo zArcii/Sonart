@@ -1436,68 +1436,113 @@ html, body {
   pointer-events: none;
 }
 
-/* Space Odyssey styling */
+/* Space Odyssey styling: Parallax drifting starfield & nebula */
 #app-background.bg-space .space-nebula {
-  opacity: 0.45;
-  background: radial-gradient(circle at 20% 30%, rgba(139, 92, 246, 0.3) 0%, transparent 50%),
-              radial-gradient(circle at 80% 70%, rgba(236, 72, 153, 0.25) 0%, transparent 50%),
-              radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.2) 0%, transparent 60%);
-  filter: blur(80px);
-  animation: nebulaDrift 30s infinite alternate ease-in-out;
+  opacity: 0.55;
+  background: radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.35) 0%, transparent 45%),
+              radial-gradient(circle at 90% 80%, rgba(236, 72, 153, 0.3) 0%, transparent 45%),
+              radial-gradient(circle at 50% 40%, rgba(59, 130, 246, 0.25) 0%, transparent 55%),
+              radial-gradient(circle at 80% 20%, rgba(16, 185, 129, 0.15) 0%, transparent 40%);
+  filter: blur(90px);
+  animation: nebulaDrift 25s infinite alternate ease-in-out;
 }
 #app-background.bg-space .space-stars {
-  opacity: 0.7;
+  opacity: 0.85;
   background-image: 
-    radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
-    radial-gradient(1.5px 1.5px at 40px 70px, #fff, rgba(0,0,0,0)),
-    radial-gradient(1px 1px at 50px 160px, #fff, rgba(0,0,0,0)),
-    radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
-    radial-gradient(1.5px 1.5px at 130px 80px, #fff, rgba(0,0,0,0)),
-    radial-gradient(1px 1px at 160px 120px, #fff, rgba(0,0,0,0));
-  background-size: 200px 200px;
-  animation: starsTwinkle 4s infinite alternate ease-in-out;
+    radial-gradient(1.5px 1.5px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 75px 130px, #fbfbfb, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 140px 70px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2.5px 2.5px at 250px 320px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(1.5px 1.5px at 310px 180px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 450px 90px, #ffffff, rgba(0,0,0,0));
+  background-size: 500px 500px;
+  animation: starfieldScroll 40s linear infinite;
+}
+#app-background.bg-space::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.65;
+  background-image: 
+    radial-gradient(1px 1px at 40px 90px, rgba(255,255,255,0.8), rgba(0,0,0,0)),
+    radial-gradient(1.5px 1.5px at 190px 240px, rgba(255,255,255,0.9), rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 290px 120px, rgba(255,255,255,0.7), rgba(0,0,0,0)),
+    radial-gradient(1.2px 1.2px at 380px 410px, rgba(255,255,255,0.8), rgba(0,0,0,0));
+  background-size: 400px 400px;
+  animation: starfieldScrollFast 25s linear infinite;
+  pointer-events: none;
 }
 
 @keyframes nebulaDrift {
   0% { transform: scale(1) translate(0, 0) rotate(0deg); }
   100% { transform: scale(1.15) translate(4%, -3%) rotate(15deg); }
 }
-@keyframes starsTwinkle {
-  0%, 100% { opacity: 0.45; }
-  50% { opacity: 0.9; }
+@keyframes starfieldScroll {
+  from { background-position: 0 0; }
+  to { background-position: -500px 500px; }
+}
+@keyframes starfieldScrollFast {
+  from { background-position: 0 0; }
+  to { background-position: -400px -800px; }
 }
 
-/* Sunset Vibe styling */
+/* Sunset Vibe: Revamped Fluid Liquid Aurora Flow */
+#app-background.bg-sunset {
+  background: #06040a;
+}
 #app-background.bg-sunset .sunset-gradient {
-  opacity: 0.32;
-  background: linear-gradient(125deg, #EC4899, #F59E0B, #3B82F6, #10B981);
-  background-size: 400% 400%;
-  animation: sunsetDrift 18s infinite alternate ease-in-out;
-}
-@keyframes sunsetDrift {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 100% 50%; }
+  opacity: 0.6;
+  background: 
+    radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.4) 0%, transparent 50%),
+    radial-gradient(circle at 20% 80%, rgba(245, 158, 11, 0.35) 0%, transparent 50%),
+    radial-gradient(circle at 90% 90%, rgba(59, 130, 246, 0.4) 0%, transparent 55%),
+    radial-gradient(circle at 10% 10%, rgba(16, 185, 129, 0.28) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(219, 39, 119, 0.25) 0%, transparent 45%);
+  filter: blur(100px);
+  animation: sunsetLiquidFlow 20s infinite alternate ease-in-out;
 }
 
-/* Cyberpunk Grid styling */
+@keyframes sunsetLiquidFlow {
+  0% { transform: scale(1) rotate(0deg) translate(0, 0); }
+  33% { transform: scale(1.1) rotate(60deg) translate(3%, -4%); }
+  66% { transform: scale(0.95) rotate(-45deg) translate(-2%, 3%); }
+  100% { transform: scale(1.05) rotate(90deg) translate(2%, 2%); }
+}
+
+/* Cyberpunk Grid: Revamped Neon Matrix, Perspective Grid & Horizon Sun */
 #app-background.bg-cyber {
-  background: #050508;
+  background: #030206;
+}
+#app-background.bg-cyber::before {
+  content: '';
+  position: absolute;
+  top: 35%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 220px; height: 220px;
+  background: linear-gradient(to bottom, #ff007f 0%, #ff7f00 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 60px rgba(255, 0, 127, 0.4), 0 0 120px rgba(255, 127, 0, 0.2);
+  opacity: 0.35;
+  transition: opacity 800ms ease;
+  pointer-events: none;
 }
 #app-background.bg-cyber .cyber-grid {
-  opacity: 0.22;
+  opacity: 0.35;
   background-image: 
-    linear-gradient(rgba(139, 92, 246, 0.3) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(139, 92, 246, 0.3) 1px, transparent 1px);
-  background-size: 40px 40px;
+    linear-gradient(rgba(255, 0, 127, 0.4) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 0, 127, 0.4) 1px, transparent 1px);
+  background-size: 50px 50px;
   background-position: center;
-  transform: perspective(500px) rotateX(60deg) translateY(-30px);
+  transform: perspective(300px) rotateX(72deg) translateY(-20px);
   transform-origin: top center;
-  animation: gridMove 20s linear infinite;
+  animation: gridMove 12s linear infinite;
+  box-shadow: inset 0 80px 100px #030206;
 }
 #app-background.bg-cyber .cyber-scanlines {
-  opacity: 0.08;
-  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-  background-size: 100% 4px, 6px 100%;
+  opacity: 0.12;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%), 
+              linear-gradient(90deg, rgba(255, 0, 127, 0.05), rgba(0, 255, 255, 0.05));
+  background-size: 100% 6px, 12px 100%;
 }
 @keyframes gridMove {
   from { background-position: 0 0; }
