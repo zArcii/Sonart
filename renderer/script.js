@@ -148,7 +148,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const savedMode = localStorage.getItem('sonart-theme-mode') || 'dark';
   const savedAccent = localStorage.getItem('sonart-theme-accent') || '#FFFFFF';
   const savedPrimary = localStorage.getItem('sonart-theme-primary') || '#000000';
-  const savedBgAnim = localStorage.getItem('sonart-theme-bg-animated') || 'space';
+  let savedBgAnim = localStorage.getItem('sonart-theme-bg-animated') || 'space';
+  if (savedBgAnim !== 'none' && savedBgAnim !== 'space') {
+    savedBgAnim = 'space';
+    localStorage.setItem('sonart-theme-bg-animated', 'space');
+  }
   const savedYtBg = localStorage.getItem('sonart-theme-yt-bg') || '';
 
   applyTheme(savedDesign, savedMode, savedAccent, savedPrimary);
@@ -163,7 +167,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const mode = localStorage.getItem('sonart-theme-mode') || 'dark';
     const accent = localStorage.getItem('sonart-theme-accent') || '#FFFFFF';
     const primary = localStorage.getItem('sonart-theme-primary') || '#000000';
-    const bgAnim = localStorage.getItem('sonart-theme-bg-animated') || 'space';
+    let bgAnim = localStorage.getItem('sonart-theme-bg-animated') || 'space';
+    if (bgAnim !== 'none' && bgAnim !== 'space') {
+      bgAnim = 'space';
+      localStorage.setItem('sonart-theme-bg-animated', 'space');
+    }
     const ytBg = localStorage.getItem('sonart-theme-yt-bg') || '';
 
     const designRadio = document.querySelector(`input[name="theme-design"][value="${design}"]`);
@@ -228,16 +236,42 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
+    const btnNextYt = $('btn-next-yt-bg');
+    const btnResetYt = $('btn-reset-yt-bg');
     const ytInput = $('yt-bg-url');
+
     if (ytInput) {
-      ytInput.addEventListener('input', (e) => {
-        const url = e.target.value.trim();
+      ytInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          if (btnNextYt) btnNextYt.click();
+        }
+      });
+    }
+
+    if (btnNextYt && ytInput) {
+      btnNextYt.addEventListener('click', () => {
+        const url = ytInput.value.trim();
         if (url) {
           localStorage.setItem('sonart-theme-yt-bg', url);
-        } else {
-          localStorage.removeItem('sonart-theme-yt-bg');
+          loadYoutubeBackground(url);
         }
-        loadYoutubeBackground(url);
+      });
+    }
+
+    if (btnResetYt && ytInput) {
+      btnResetYt.addEventListener('click', () => {
+        ytInput.value = '';
+        localStorage.removeItem('sonart-theme-yt-bg');
+        localStorage.setItem('sonart-theme-bg-animated', 'none');
+        
+        const noneRadio = document.querySelector('input[name="bg-animated"][value="none"]');
+        if (noneRadio) noneRadio.checked = true;
+
+        const container = $('yt-bg-container');
+        if (container) container.innerHTML = '';
+
+        applyAnimatedBackground('none');
       });
     }
 
