@@ -121,6 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const bgRadio = document.querySelector(`input[name="bg-animated"][value="${bgAnim}"]`);
     if (bgRadio) bgRadio.checked = true;
+    applyAnimatedBackground(bgAnim);
 
     const pickerAccent = $('picker-accent-color');
     if (pickerAccent) pickerAccent.value = accent;

@@ -43,7 +43,7 @@
 
 html, body {
   width: 100%; height: 100%; overflow: hidden;
-  background: var(--bg); font-family: var(--font);
+  background: transparent; font-family: var(--font);
   color: var(--text); -webkit-font-smoothing: antialiased;
 }
 
@@ -652,8 +652,34 @@ html, body {
 /* Playlists Grid */
 .playlists-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 18px;
+  width: 100%;
+}
+
+@media (max-width: 1100px) {
+  .playlists-grid {
+    gap: 12px;
+  }
+  .playlist-card {
+    padding: 12px;
+    border-radius: 12px;
+  }
+  .playlist-card-art {
+    margin-bottom: 10px;
+  }
+}
+@media (max-width: 850px) {
+  .playlists-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+}
+@media (max-width: 550px) {
+  .playlists-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
 }
 
 /* Playlist Card */
